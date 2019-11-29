@@ -33,10 +33,9 @@ def add_features(df, market_mode=MARKET_MODE.MARKET_KOR):
             close_prev = df['close_b_{i}'.format(i=i)]
             df['close_change_b_{i}_w{window_size}'.format(i=i, window_size=window_size)] = (close_cur - close_prev) / close_prev
 
-        for i in range(window_size, 36, 5):
-            close_cur = df['close_f_{i}'.format(i=i)]
-            close_prev = df['close_f_{i}'.format(i=i-window_size)]
-            df['close_change_f_{i}_w{window_size}'.format(i=i, window_size=window_size)] = (close_cur - close_prev) / close_prev
+        close_cur = df['close_f_{i}'.format(i=window_size)]
+        close_prev = df['close_f_0']
+        df['close_change_f_{w}_w{w}'.format(w=window_size)] = (close_cur - close_prev) / close_prev
 
 
     df = df[df.open != 0]
