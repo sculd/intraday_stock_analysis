@@ -11,6 +11,7 @@ def do_plot(df_1, df_2, xlabel='df1', ylabel='df2', image_file_name=None):
     plt.title('Scatter plot')
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
+    plt.ylim([-0.15, 0.15])
     image_file_name = image_file_name or "images/scatter.png"
     plt.savefig(image_file_name)
     plt.show()

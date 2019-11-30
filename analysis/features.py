@@ -27,11 +27,10 @@ def add_features(df, market_mode=MARKET_MODE.MARKET_KOR):
         df['close_f_{i}'.format(i=i)] = df.groupby(level=1).shift(-1 * _diff_sign * i).close
         df['volume_f_{i}'.format(i=i)] = df.groupby(level=1).shift(-1 * _diff_sign * i).volume
 
-    for window_size in range(5, 16, 5):
-        for i in range(window_size, 36, 5):
-            close_cur = df['close_b_{i}'.format(i=i-window_size)]
-            close_prev = df['close_b_{i}'.format(i=i)]
-            df['close_change_b_{i}_w{window_size}'.format(i=i, window_size=window_size)] = (close_cur - close_prev) / close_prev
+    for window_size in range(5, 21, 5):
+        close_cur = df['close_b_{i}'.format(i=0)]
+        close_prev = df['close_b_{i}'.format(i=window_size)]
+        df['close_change_b_{w}_w{w}'.format(w=window_size)] = (close_cur - close_prev) / close_prev
 
         close_cur = df['close_f_{i}'.format(i=window_size)]
         close_prev = df['close_f_0']
