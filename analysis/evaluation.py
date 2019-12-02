@@ -44,4 +44,3 @@ def print_evaluation(df_signal, param):
     print('')
     print('outlying riser (>0.3)')
     print(df_signal[df_signal[feature_forward_jump] > 0.3][['close_b_10', 'close_b_5', 'close', 'close_f_5', 'close_f_10']])
-

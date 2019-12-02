@@ -64,4 +64,10 @@ def pick_signal(dff, parameter):
     # dff = dff[dff[feature_backward] < -0.20]
     # dff = dff[(dff[feature_backward] > 0.10) | (dff[feature_backward] < -0.10)]
 
-    return df_signal
+    df_signal_by_symbol = df_signal.reset_index().set_index('symbol').sort_index(by=['symbol', 'datetime'])
+    df_signal_by_symbol['datetime'] = df_signal_by_symbol['datetime'].astype('datetime64[ns]')
+    df_signal_by_symbol = df_signal_by_symbol[
+        df_signal_by_symbol.datetime.diff().fillna(np.timedelta64(100, 'm')) > np.timedelta64(parameter.time_window_backward_minutes, 'm')]
+    df_signal_deduped = df_signal_by_symbol.reset_index().set_index(['datetime', 'symbol'])
+
+    return df_signal_deduped

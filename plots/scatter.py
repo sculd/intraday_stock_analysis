@@ -25,3 +25,6 @@ def plot(df, daily_change_lower_limit):
     print(df_daily_summary[df_daily_summary.signal_length >= 9].tail(20))
 
     do_plot(df_daily_summary.signal_length, df_daily_summary.daily_profit, xlabel='signal_length', ylabel='daily_profit')
+
+def plots(df, param):
+    pass
