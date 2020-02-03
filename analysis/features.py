@@ -4,16 +4,27 @@ from util.market import MARKET_MODE
 
 _CLOSE_LOWER_LIMIT_KRW = 2000
 _CLOSE_LOWER_LIMIT_USD = 2
-_PREV_VOLUME_LOWER_LIMIT = 3
-_PREV_VOLUME_UPPER_LIMIT = 10000
+_CLOSE_LOWER_LIMIT_CRYPTO = 1
 
-def add_features(df, market_mode=MARKET_MODE.MARKET_KOR):
-    close_lower_limit = None
+class PreFilterParameters:
+    def __init__(self, close_lower_limit):
+        self.close_lower_limit = close_lower_limit
 
+def get_pre_filter_parameters(market_mode=MARKET_MODE.MARKET_KOR):
     if market_mode is MARKET_MODE.MARKET_US:
         close_lower_limit = _CLOSE_LOWER_LIMIT_USD
     elif market_mode is MARKET_MODE.MARKET_KOR:
         close_lower_limit = _CLOSE_LOWER_LIMIT_KRW
+    elif market_mode is MARKET_MODE.MARKET_CRYPTO:
+        close_lower_limit = _CLOSE_LOWER_LIMIT_CRYPTO
+    else:
+        close_lower_limit = 0
+
+    param = PreFilterParameters(close_lower_limit)
+    return param
+
+def add_features(df, market_mode=MARKET_MODE.MARKET_KOR):
+    param = get_pre_filter_parameters(market_mode=market_mode)
 
     _diff_sign = 1
 
@@ -36,9 +47,8 @@ def add_features(df, market_mode=MARKET_MODE.MARKET_KOR):
         close_prev = df['close_f_0']
         df['close_change_f_{w}_w{w}'.format(w=window_size)] = (close_cur - close_prev) / close_prev
 
-
     df = df[df.open != 0]
-    df = df[df.close > close_lower_limit]
+    df = df[df.close > param.close_lower_limit]
 
     df = df.dropna()
     return df
