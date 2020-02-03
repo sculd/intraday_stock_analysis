@@ -62,8 +62,6 @@ def _dedupe_consecutives(df_signal, parameter):
     #df_signal_by_symbol = df_signal_by_symbol[
     #    df_signal_by_symbol.datetime.diff().fillna(np.timedelta64(100, 'm')) > np.timedelta64(parameter.time_window_backward_minutes, 'm')]
 
-    #df_signal_by_symbol = df_signal_by_symbol[df_signal_by_symbol.datetime.diff().fillna(np.timedelta64(100, 'm')) > np.timedelta64(parameter.time_window_backward_minutes, 'm')]
-
     df_signal_by_symbol = df_signal_by_symbol[
         df_signal_by_symbol.datetime.diff(-1).fillna(np.timedelta64(-100, 'm')) < -np.timedelta64(parameter.time_window_backward_minutes, 'm')]
 
